@@ -127,4 +127,5 @@ snap-map/                         → Project root
 # 💬 Contact
 Reach out to me on Discord, ID: `terrormanzero` aka `terror_quota`
 
+Our Server: https://bit.ly/OpencodeDiscord
 
