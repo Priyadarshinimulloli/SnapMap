@@ -54,7 +54,7 @@ const LoadingScreen = () => (
 );
 
 const Navigation = () => {
-  const { isLoaded } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
     return <LoadingScreen />;

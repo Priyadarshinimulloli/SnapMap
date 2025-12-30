@@ -1,13 +1,21 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { useSignIn, useOAuth } from "@clerk/clerk-expo";
+import { useSignIn, useOAuth, useAuth } from "@clerk/clerk-expo";
 import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const SignInScreen = ({ navigation }) => {
   const { isLoaded } = useSignIn();
+  const { isSignedIn } = useAuth();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  // Navigate to HomeScreen when signed in
+  useEffect(() => {
+    if (isSignedIn) {
+      navigation.replace("HomeScreen");
+    }
+  }, [isSignedIn, navigation]);
 
   const onSignInWithGoogle = useCallback(async () => {
     if (!isLoaded) return;
@@ -17,7 +25,7 @@ const SignInScreen = ({ navigation }) => {
 
       if (createdSessionId) {
         await setActive({ session: createdSessionId });
-        // Navigation handled by useAuth() in Navigation.js
+        // Navigation will happen automatically via useEffect above
       }
     } catch (err) {
       console.error("Sign in error:", JSON.stringify(err, null, 2));
