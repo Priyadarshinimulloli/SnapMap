@@ -6,17 +6,17 @@ const UploadConfirmationScreen = ({ navigation, route }) => {
 
   const handleUpload = () => {
     const timestamp = new Date().toISOString();
-    const cd = location?.cd
+    const coords = location?.coords
       ? {
-          latitude: location.cd.latitude,
-          longitude: location.cd.longitude,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
         }
       : null;
 
     console.log("metadata", {
       timestamp,
       photo,
-      location: cd,
+      location: coords,
     });
 
     Alert.alert("Photo was uploaded", "logged the data.");

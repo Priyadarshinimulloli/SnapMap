@@ -1,6 +1,8 @@
 import { CameraView, useCameraPermissions } from "expo-camera";
-import React, { useRef, useState } from "react";
+import * as Location from "expo-location";
+import React, { useEffect, useRef, useState } from "react";
 import {
+  Alert,
   Button,
   StyleSheet,
   Text,
@@ -23,7 +25,25 @@ export default function CameraScreen({ navigation }) {
   const [facing, setFacing] = useState(CAMERA_FACING.back);
   const [flash, setFlash] = useState(FLASH_MODE.off);
   const [permission, requestPermission] = useCameraPermissions();
+  const [locationPermission, setLocationPermission] = useState(null);
   const [isCameraOk, setIsCameraOk] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const requestLocationPermission = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (isMounted) {
+        setLocationPermission(status);
+      }
+    };
+
+    requestLocationPermission();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   if (!permission) {
     return <View />;
@@ -50,15 +70,53 @@ export default function CameraScreen({ navigation }) {
     );
   };
 
+  const ensureLocationPermission = async () => {
+    const current = await Location.getForegroundPermissionsAsync();
+
+    if (current.status === "granted") {
+      setLocationPermission(current.status);
+      return "granted";
+    }
+
+    if (current.canAskAgain) {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status);
+      return status;
+    }
+
+    Alert.alert(
+      "Location permission needed",
+      "Enable location permission for Expo Go in system settings."
+    );
+    setLocationPermission(current.status);
+    return current.status;
+  };
+
   const handletheCapture = async () => {
     if (!cameraRef.current || !isCameraOk) {
       return;
     }
 
     const photo = await cameraRef.current.takePictureAsync();
+    let location = null;
+    const permissionStatus = await ensureLocationPermission();
+
+    if (permissionStatus === "granted") {
+      const servicesEnabled = await Location.hasServicesEnabledAsync();
+      if (!servicesEnabled) {
+        Alert.alert("Location off", "Enable location services to add location data.");
+      } else {
+        try {
+          location = await Location.getCurrentPositionAsync({});
+        } catch (error) {
+          Alert.alert("Location error", "Unable to fetch your location.");
+        }
+      }
+    }
 
     navigation.navigate("UploadConfirmationScreen", {
       photo,
+      location,
     });
   };
 

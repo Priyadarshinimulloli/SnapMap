@@ -12,7 +12,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.snapmap.app",
       "infoPlist": {
-        "NSCameraUsageDescription": "Allow Snap Map to access your camera."
+        "NSCameraUsageDescription": "Allow Snap Map to access your camera.",
+        "NSLocationWhenInUseUsageDescription": "Allow Snap Map to access your location while using the app."
       }
     },
     "android": {
@@ -22,6 +23,10 @@
         "backgroundImage": "./src/assets/images/android-icon-background.png",
         "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
       },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "edgeToEdgeEnabled": true,
       "package": "com.snapmap.app"
     },
