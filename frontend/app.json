@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.snapmap.app"
+      "bundleIdentifier": "com.snapmap.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow Snap Map to access your camera."
+      }
     },
     "android": {
       "adaptiveIcon": {
