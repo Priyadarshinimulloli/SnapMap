@@ -1,6 +1,6 @@
-const User = require("../models/User")
+import User from "../models/User.js"
 
-const registerUser = async(req,res) => {
+export const registerUser = async(req,res) => {
     try {
         const clerkUserId = req.userId
 
@@ -33,4 +33,3 @@ const registerUser = async(req,res) => {
     }
 }
 
-module.exports = {registerUser}
