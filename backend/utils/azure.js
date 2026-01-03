@@ -1,6 +1,9 @@
 import {BlobServiceClient} from "@azure/storage-blob"
+import { configDotenv } from "dotenv"
 
-const CONTAINER_NAME = "snapmap-blob"
+configDotenv()
+
+const CONTAINER_NAME = process.env.CONTAINER_NAME
 
 async function uploadToAzure(buffer, fileName) {
     if(!buffer || !fileName)
@@ -13,6 +16,15 @@ async function uploadToAzure(buffer, fileName) {
     const blobServiceClient = BlobServiceClient.fromConnectionString(         
         process.env.AZURE_STORAGE_CONNECTION                                    // 1. Create a Service Client
     )
+
+    try {
+        await blobServiceClient.getAccountInfo();
+        console.log("✅ Azure Blob Storage Connected");
+    } catch (err) {
+        console.error("❌ Azure Blob Connection Failed:", err.message);
+        throw err;
+    }
+
 
     const containerClient = blobServiceClient.getContainerClient(CONTAINER_NAME)  // 2. Get Container Client
 

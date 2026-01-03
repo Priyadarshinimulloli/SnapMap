@@ -13,7 +13,7 @@ dotenv.config();
 async function testUpload() {
   try {
     
-    const imagePath = path.join(__dirname, "test.jpg");
+    const imagePath = path.join(__dirname, "test2.png");
     const imageBuffer = fs.readFileSync(imagePath);
     const fileName = `test_${Date.now()}.jpg`;
     const imageUrl = await uploadToAzure(imageBuffer, fileName);

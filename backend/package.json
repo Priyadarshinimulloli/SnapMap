@@ -13,8 +13,8 @@
   "type": "module",
   "dependencies": {
     "@azure/storage-blob": "^12.29.1",
-    "@clerk/clerk-sdk-node": "^5.0.0",
     "@clerk/backend": "^2.29.0",
+    "@clerk/clerk-sdk-node": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
