@@ -5,11 +5,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import type { ScreenProps } from "../types";
 import { useUser } from "@clerk/clerk-expo";
 import HomeStyle from "../styles/HomeStyle";
+import { useAuth } from "@clerk/clerk-expo";
+import { CommonActions } from "@react-navigation/native";
 
 const styles = HomeStyle;
 
 const HomeScreen = ({ navigation }: ScreenProps<"HomeScreen">) => {
   const { user } = useUser();
+  const { signOut } = useAuth();
 
   console.log("user", user);
 
@@ -20,7 +23,21 @@ const HomeScreen = ({ navigation }: ScreenProps<"HomeScreen">) => {
       navigation.navigate("RegisterUserScreen");
     }
   }, [user, navigation]);
-  
+
+  const logout = async () => {
+    try {
+      await signOut();
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "SplashScreen" }],
+        })
+      );
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer}>
@@ -58,6 +75,11 @@ const HomeScreen = ({ navigation }: ScreenProps<"HomeScreen">) => {
             style={styles.cameraIcon}
           />
           <Text style={styles.buttonText}>TAKE PHOTO</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.logout}>
+        <TouchableOpacity onPress={logout}>
+          <Text style={styles.buttonText}>Log out</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

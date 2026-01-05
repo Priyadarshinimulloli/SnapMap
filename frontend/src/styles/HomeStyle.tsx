@@ -57,6 +57,17 @@ const HomeStyle = StyleSheet.create({
   cameraIcon: {
     marginRight: 12,
   },
+  logout: {
+    position: "absolute",
+    top: 50,
+    right: 20,
+    width: 100,
+    height: 60,
+    borderRadius: 10,
+    backgroundColor: "#FF4444",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default HomeStyle;
